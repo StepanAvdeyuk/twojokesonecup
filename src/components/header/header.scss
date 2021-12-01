@@ -32,3 +32,11 @@
         }
     }
 }
+@media (max-width: 768px) {
+    .header {
+        grid-template-columns: auto auto;
+        &__btn {
+            font-size: 11px;
+        }
+    }
+}

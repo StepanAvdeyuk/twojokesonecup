@@ -124,3 +124,55 @@
         font-size: 16px;
     }
 }
+@media (max-width: 768px) {
+    .main {
+        &__wrapper {
+            grid-template-columns: auto;
+            margin-top: 10px;
+            grid-row-gap: 10px;
+            row-gap: 10px;
+        }
+        &__item {
+            padding: 15px;
+        }
+        &__line {
+            left: 15px;
+            top: 46px;
+            width: 268px;
+        }
+        &__level {
+            img {
+                width: 22px;
+            }
+        }
+        &__like {
+            padding: 4px;
+            padding-right: 30px;
+
+            img {
+                width: 20px;
+            }
+            &-btn {
+                width: 24px;
+                height: 23px;
+            }
+        }
+        &__title {
+            line-height: 22px;
+            font-size: 20px;
+        }
+        &__joke {
+            margin-top: 10px;
+            font-size: 16px;
+            line-height: 22px;
+        }
+        &__author {
+            align-self: end;
+            font-size: 12px;
+        }
+        &__bottom {
+            margin-top: 12px;
+            align-items: end;
+        }
+    }
+}

@@ -57,6 +57,13 @@ input::-webkit-inner-spin-button {
     position: relative;
 }
 
+@media (max-width: 768px) {
+        .container {
+            width: 100%;
+            padding: 0 10px;
+        }
+}
+
 
 .pulse {
     animation: pulse 1.5s ease-in-out .5s infinite

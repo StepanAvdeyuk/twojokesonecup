@@ -1,0 +1,54 @@
+@import '../../style/variables.scss';
+
+.p404 {
+    &__wrapper {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(11.74deg, rgba(118, 187, 255, 0.57) 1.33%, #EFF7FF 98.4%);
+    }
+    padding-top: 100px;
+    font-size: 200px;
+    color: $dark;
+    text-align: center;
+    font-weight: 400;
+    text-shadow: 4px 0px 0px #7CBBFF;
+    span {
+        color: #BFDEFF;
+    }
+    &__text {
+        text-align: center;
+        color: $dark;
+        font-size: 20px;
+        font-weight: 300;
+    }
+    &__btn {
+        margin: 0 auto;
+        margin-top: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $dark;
+        font-weight: 400;
+        font-size: 14px;
+        background: none;
+        border: 1px solid $dark;
+        width: 170px;
+        height: 35px;
+        border-radius: 4px;
+        transition: all 0.2s ease-in-out;
+        &:hover {
+            color: $dark;
+            box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.08);
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .p404 {
+        font-size: 140px;
+        &__text {
+            font-size: 16px;
+        }
+    }
+}

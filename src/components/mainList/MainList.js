@@ -22,53 +22,48 @@ import hueta from '../../resources/img/hueta.png'
 
 const MainList = ({searchValue}) => {
 
+
     const [jokes, setJokes] = useState([]);
     const [offset, setOffset] = useState(0);
-    const [fetching, setFetching] = useState(false);
     const [jokeEnd, setJokeEnd] = useState(false);
-
+    const [fetching, setFetching] = useState(false);
 
     const [jokesSearch, setJokesSearch] = useState([]);
     const [zeroSearch, setZeroSearch] = useState(false);
 
     const level = [level1, level2, level3, level4, level5, level6, level7, level8, level9, level10];
 
-    const {loading, error, getAllJokes, getSearchJokes} = useMarvelService();
+    const {loading, getAllJokes, getSearchJokes} = useMarvelService();
 
     useEffect(() => {
         onRequest(offset, 4);
-        document.addEventListener('scroll', scrollHandler)
+        
+        const scrollId = setInterval(scrollHandler, 250);
 
         return function() {
-            document.removeEventListener('scroll', scrollHandler)
+            clearInterval(scrollId);
         }
     }, []);
 
     useEffect(() => {
         if (searchValue.length != 0) {
-            if(zeroSearch) {
-                setZeroSearch(false);
-            }
-            setJokesSearch([]);
             onRequestSearch(searchValue, 0, -1);
+        } else {
+            setZeroSearch(false);
+            setFetching(false);
         }
     } , [searchValue])
 
     useEffect(() => {
-        if (fetching && !jokeEnd && searchValue.length == 0) {
-            onRequest(offset, 2);
-            const uploadTime = setTimeout(function() {
-                setFetching(false);   
-                            }, 500)
-            return () => {
-                    clearInterval(uploadTime);
+            if (fetching && !jokeEnd && searchValue.length == 0) {
+                onRequest(offset, 2);
+                setFetching(false);
             }
-        }
     }, [fetching])
 
-    const scrollHandler = (e) => {
-        if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100) {
-            setFetching(true);
+    const scrollHandler = () => {
+        if (document.documentElement.scrollHeight - (document.documentElement.scrollTop + window.innerHeight) < 100) {
+                setFetching(true);
         }
     }
 
@@ -84,16 +79,22 @@ const MainList = ({searchValue}) => {
 
     const onJokesLoaded = (newJokes) => {
         if (newJokes.length == 0) {setJokeEnd(true)}
-        setJokes(jokes => [...jokes, ...newJokes]);
         setOffset(offset => offset + newJokes.length);
+        setJokes(jokes => [...jokes, ...newJokes]);
     }
 
     const onJokesSearchLoaded = (newJokes) => {
-        if (newJokes.length == 0) {setZeroSearch(true)}
-        setJokesSearch(jokesSearch => [...jokesSearch, ...newJokes]);
+        if (newJokes.length == 0) {
+            setJokesSearch([]);
+            setZeroSearch(true); 
+        } else {
+            setJokesSearch(newJokes);
+            setZeroSearch(false);
+        }
     }
 
     const onLikeUpdate = (id) => {
+       if (!searchValue) {
         setJokes(jokes => jokes.map(item => {
             if (item.id !== id) {
                 return item;
@@ -101,6 +102,16 @@ const MainList = ({searchValue}) => {
                 return {author: item.author, title: item.title, level: item.level, show: item.show, content: item.content, id: item.id, published_at: item.published_at, picture: item.picture, likes: item.likes + 1, isLiked: true}
             }
         }))
+       }
+       else {
+        setJokesSearch(jokesSearch => jokesSearch.map(item => {
+            if (item.id !== id) {
+                return item;
+            } else {
+                return {author: item.author, title: item.title, level: item.level, show: item.show, content: item.content, id: item.id, published_at: item.published_at, picture: item.picture, likes: item.likes + 1, isLiked: true}
+            }
+        }))
+       }
     }
 
     const onLike = useCallback((id) => {
@@ -110,6 +121,13 @@ const MainList = ({searchValue}) => {
 
 
     function renderItems(jokes) {
+        // const dw = [{
+        //     title: "fefefe",
+        //     level: 3,
+        //     likes: 12,
+        //     content: "fewfewf fewfewf fewfewf fewfewf fewfewf fewfewf fewfewf fewfewf fewfewf",
+        //     author: "dwfwqf"
+        // }]
         const items = jokes.map((item) => {
                 let likes = item.likes;
                 if (likes > 1000000) {
